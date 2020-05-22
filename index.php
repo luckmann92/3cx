@@ -15,10 +15,11 @@ $arResponse = [
 
 $arRequest = (array)json_decode(file_get_contents("php://input"), true);
 
+
 if (isset($arRequest) && isset($arRequest['action'])) {
     $arActions = [];
 
-    $arLeads = Lead::getByPhone($arRequest['phone']);
+    $arLeads = Lead::getByPhone($arRequest['fields']['phone']);
 
     if ($arLeads) {
         foreach ($arLeads as $k => $arLead) {
@@ -261,9 +262,9 @@ if (isset($arRequest) && isset($arRequest['action'])) {
                 case 'ADD_NEW_LEAD':
                     $arLeadFields = [
                         'STATUS_ID' => 'NEW',
-                        'TITLE' => 'Новая заявка: '. $arRequest['phone'],
+                        'TITLE' => 'Новая заявка: '. $arRequest['fields']['phone'],
                         'PHONE' => [
-                            "VALUE" => $arRequest['phone'],
+                            "VALUE" => $arRequest['fields']['phone'],
                             "VALUE_TYPE" => "WORK"
                         ],
                         'SOURCE_ID' => Status::$leadSource
